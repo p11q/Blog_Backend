@@ -1,0 +1,29 @@
+{
+  "name": "",
+  "version": "0.0.1",
+  "private": true,
+  "description": "",
+  "license": "UNLICENSED",
+  "author": "",
+  "scripts": {
+    "lint": "eslint .",
+    "start:dev": "nest start --watch"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9",
+    "@types/node": "^25",
+    "eslint": "^9",
+    "eslint-config-nestjs": "^0.8.0",
+    "eslint-config-prettier": "^10.1.8",
+    "prettier": "~3.7",
+    "prettier-plugin-organize-imports": "^4",
+    "typescript": "~5.9",
+    "typescript-eslint": "^8"
+  },
+  "packageManager": "pnpm@10.23.0",
+  "dependencies": {
+    "@nestjs/common": "^11.1.12",
+    "@nestjs/core": "^11.1.12",
+    "@nestjs/platform-express": "^11.1.12"
+  }
+}
