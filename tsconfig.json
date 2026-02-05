@@ -24,7 +24,7 @@
     "skipLibCheck": true,
     "sourceMap": true,
     "sourceRoot": "/",
-    "strict": true,
+    "strict": false,
     "target": "ES2022"
   }
 }

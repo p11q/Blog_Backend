@@ -1,13 +1,22 @@
-import { Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+} from '@nestjs/common';
 import { ArticalsService } from './articales.service';
+import { CreateArticaleDto } from './dto/creat-articale.dto';
 
 @Controller('articales')
 export class ArticalsController {
   constructor(private readonly service: ArticalsService) {}
 
   @Post()
-  create() {
-    this.service.create();
+  create(@Body() data: CreateArticaleDto) {
+    return this.service.create(data);
   }
 
   @Get()

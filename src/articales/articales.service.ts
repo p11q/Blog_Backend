@@ -1,9 +1,18 @@
 import { Injectable } from '@nestjs/common';
+import { CreateArticaleDto } from './dto/creat-articale.dto';
+import { ArticaleDto } from './dto/articale.dto';
 
 @Injectable()
 export class ArticalsService {
-  create() {
-    console.log('Method: create');
+  create(data: CreateArticaleDto) {
+    const articale = new ArticaleDto();
+    articale.title = data.title;
+    articale.text = data.text;
+    articale.description = data.description;
+    articale.tags = data.tags;
+    articale.createAt = new Date();
+    articale.updateAt = new Date();
+    return articale;
   }
 
   getList() {
