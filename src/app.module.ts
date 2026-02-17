@@ -2,20 +2,13 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
-import { ArticalsModule } from './articales/articales.module';
+import { ArticalsModule } from './articles/articles.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { dataSourceOptions } from '../db/data-source';
 
 @Module({
   imports: [
-    TypeOrmModule.forRoot({
-      type: 'postgres',
-      host: 'localhost',
-      port: 5432,
-      username: 'postgres',
-      password: 'pass123',
-      database: 'nestjs_blog',
-      synchronize: false,
-    }),
+    TypeOrmModule.forRoot(dataSourceOptions),
     UsersModule,
     ArticalsModule,
   ],

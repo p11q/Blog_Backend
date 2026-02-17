@@ -12,8 +12,3 @@ services:
 
 volumes:
   postgres_data:
-    driver: local
-    driver_opts:
-      type: none
-      o: bind
-      device: D:\Nest_JS\blog_backend\src\storage

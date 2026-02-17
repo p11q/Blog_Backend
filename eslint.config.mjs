@@ -18,35 +18,13 @@ export default defineConfig([
       },
     },
   },
-
   eslint.configs.recommended,
-
-  // Используем recommendedTypeChecked вместо strict
-  tseslint.configs.recommendedTypeChecked,
-  tseslint.configs.stylisticTypeChecked,
+  // tseslint.configs.strictTypeChecked,
+  // tseslint.configs.stylisticTypeChecked,
   eslintConfigPrettier,
 
   {
     rules: {
-      // Правила из strict конфигурации, которые вам нужны
-      '@typescript-eslint/no-explicit-any': 'error',
-      '@typescript-eslint/no-unsafe-argument': 'warn',
-      '@typescript-eslint/no-unsafe-assignment': 'warn',
-      '@typescript-eslint/no-unsafe-call': 'warn',
-      '@typescript-eslint/no-unsafe-member-access': 'warn',
-      '@typescript-eslint/no-unsafe-return': 'warn',
-      '@typescript-eslint/require-await': 'warn',
-      '@typescript-eslint/restrict-plus-operands': 'error',
-      '@typescript-eslint/restrict-template-expressions': [
-        'error',
-        {
-          allowNumber: true,
-          allowBoolean: true,
-          allowNullish: true,
-        },
-      ],
-
-      // Ваши кастомные правила
       '@typescript-eslint/no-extraneous-class': [
         'error',
         { allowWithDecorator: true },
@@ -63,20 +41,13 @@ export default defineConfig([
           varsIgnorePattern: '^_',
         },
       ],
+      '@typescript-eslint/restrict-template-expressions': [
+        'error',
+        { allowNumber: true },
+      ],
       'arrow-body-style': ['error', 'as-needed'],
       curly: 'error',
       'no-else-return': 'error',
-    },
-  },
-
-  // Специальная конфигурация для файлов с проблемами типов
-  {
-    files: ['src/main.ts'],
-    rules: {
-      '@typescript-eslint/no-unsafe-assignment': 'off',
-      '@typescript-eslint/no-unsafe-call': 'off',
-      '@typescript-eslint/no-unsafe-member-access': 'off',
-      '@typescript-eslint/no-unsafe-argument': 'off',
     },
   },
 
