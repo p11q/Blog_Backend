@@ -14,7 +14,7 @@
     "lib": ["ES2023", "ESNext.Object", "ESNext.Collection"],
     "module": "nodenext",
     "noFallthroughCasesInSwitch": true,
-    "noImplicitAny": true,
+    "noImplicitAny": false,
     "noUncheckedIndexedAccess": true,
     "outDir": "./dist",
     "paths": {

@@ -1,33 +1,91 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateArticaleDto } from './dto/creat-article.dto';
 import { ArticaleDto } from './dto/article.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { ArticleEntity } from '~/shared/module/article.entity';
+import { Repository } from 'typeorm';
+import { UserEntity } from '~/shared/module/user.entity';
+import { log } from 'console';
+import { UpdateArticaleDto } from './dto/update-article.dto';
 
 @Injectable()
 export class ArticalsService {
-  create(data: CreateArticaleDto) {
-    const articale = new ArticaleDto();
+  constructor(
+    @InjectRepository(ArticleEntity)
+    private readonly articRepo: Repository<ArticleEntity>,
+    @InjectRepository(UserEntity)
+    private readonly userRepo: Repository<UserEntity>,
+  ) {}
+
+  async create(data: CreateArticaleDto) {
+    const user = await this.userRepo
+      .findOne({
+        where: {
+          id: 1,
+        },
+      })
+      .catch((err) => {
+        console.log(err);
+        return null;
+      });
+
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    const articale = new ArticleEntity();
     articale.title = data.title;
     articale.text = data.text;
     articale.description = data.description;
     articale.tags = data.tags;
-    articale.createAt = new Date();
-    articale.updateAt = new Date();
-    return articale;
+    articale.author = user;
+
+    const res = await articale.save();
+
+    return new ArticaleDto(res);
   }
 
-  getList() {
-    console.log('Method: getList');
+  async getList() {
+    const articles = await this.articRepo.find();
+
+    return articles.map((item) => new ArticaleDto(item));
   }
 
-  getById(id: number) {
-    console.log(`Method: getByID ${id}`);
+  async getById(id: number) {
+    const article = await this.articRepo
+      .findOne({ where: { id } })
+      .catch((err) => {
+        console.log(err);
+        return null;
+      });
+
+    if (!article) {
+      throw new NotFoundException('Article not found');
+    }
+
+    return new ArticaleDto(article);
   }
 
-  updateById(id: number) {
-    console.log(`Method: updateByID ${id}`);
+  async updateById(id: number, data: UpdateArticaleDto) {
+    await this.articRepo
+      .update(
+        { id },
+        {
+          title: data.title,
+          text: data.text,
+          description: data.description,
+          tags: data.tags,
+        },
+      )
+      .catch((err) => {
+        console.log(err);
+        return null;
+      });
+
+    return await this.getById(id);
   }
 
-  deleteById(id: number) {
-    console.log(`Method: deleteByID ${id}`);
+  async deleteById(id: number) {
+    await this.articRepo.delete(id);
   }
 }

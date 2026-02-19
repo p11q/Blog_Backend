@@ -9,8 +9,9 @@ import {
 } from '@nestjs/common';
 import { ArticalsService } from './articles.service';
 import { CreateArticaleDto } from './dto/creat-article.dto';
+import { UpdateArticaleDto } from './dto/update-article.dto';
 
-@Controller('articales')
+@Controller('articles')
 export class ArticalsController {
   constructor(private readonly service: ArticalsService) {}
 
@@ -21,17 +22,17 @@ export class ArticalsController {
 
   @Get()
   getList() {
-    this.service.getList();
+    return this.service.getList();
   }
 
   @Get(':id')
   getById(@Param('id') id: number) {
-    this.service.getById(id);
+    return this.service.getById(id);
   }
 
   @Put(':id')
-  updateById(@Param('id') id: number) {
-    this.service.updateById(id);
+  updateById(@Param('id') id: number, @Body() data: UpdateArticaleDto) {
+    return this.service.updateById(id, data);
   }
 
   @Delete(':id')
