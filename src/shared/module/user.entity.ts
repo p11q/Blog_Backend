@@ -28,7 +28,7 @@ export class UserEntity extends BaseEntity {
   @Column()
   password: string;
 
-  @Column({ enum: EUserRole })
+  @Column({ enum: EUserRole, default: EUserRole.user })
   role: EUserRole;
 
   @CreateDateColumn({ name: 'create_at' })

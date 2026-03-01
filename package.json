@@ -11,8 +11,7 @@
     "start:dev": "nest start --watch",
     "typeorm": "npm run build && npx typeorm -d dist/db/data-source.js",
     "migration:generate": "npm run typeorm -- migration:generate",
-    "migration:run": "npm run typeorm -- migration:run",
-    "migration:generate": "npm run typeorm -- migration:generate"
+    "migration:run": "npm run typeorm -- migration:run"
   },
   "devDependencies": {
     "@eslint/js": "^9",
@@ -29,8 +28,11 @@
   "dependencies": {
     "@nestjs/common": "^11.1.12",
     "@nestjs/core": "^11.1.12",
+    "@nestjs/jwt": "^11.0.2",
     "@nestjs/platform-express": "^11.1.12",
     "@nestjs/typeorm": "^11.0.0",
+    "@types/bcrypt": "^6.0.0",
+    "bcrypt": "^6.0.0",
     "globals": "^17.3.0",
     "pg": "^8.18.0",
     "typeorm": "^0.3.28"
