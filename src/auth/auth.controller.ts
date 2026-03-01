@@ -3,6 +3,7 @@ import { AuthService } from './auth.service';
 import { SignInResponceDto } from './dto/sign-in-resp.dto';
 import { SignInDto } from './dto/sign-in.dto';
 import { SignUpDto } from './dto/sign-up.dto';
+import { RefreshTokenEntity } from '~/shared/module/refresh-token.entity';
 
 @Controller('auth')
 export class AuthController {
@@ -16,5 +17,12 @@ export class AuthController {
   @Post('sign-up')
   async singUp(@Body() data: SignUpDto): Promise<SignInResponceDto> {
     return this.AuthService.signUp(data);
+  }
+
+  @Post('refresh-token')
+  async refreshToken(
+    @Body() data: RefreshTokenEntity,
+  ): Promise<SignInResponceDto> {
+    return this.AuthService.refreshToken(data.token);
   }
 }

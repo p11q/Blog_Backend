@@ -5,10 +5,11 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserEntity } from '~/shared/module/user.entity';
 import { UsersService } from '~/users/users.service';
 import { JwtModule } from '@nestjs/jwt';
+import { RefreshTokenEntity } from '~/shared/module/refresh-token.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([UserEntity]),
+    TypeOrmModule.forFeature([UserEntity, RefreshTokenEntity]),
     JwtModule.register({
       global: true,
       secret: process.env.JWT_SECRET,
