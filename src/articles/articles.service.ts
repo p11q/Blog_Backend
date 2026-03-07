@@ -1,15 +1,18 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { CreateArticaleDto } from './dto/creat-article.dto';
-import { ArticaleDto } from './dto/article.dto';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
+import { CreateArticleDto } from './dto/creat-article.dto';
+import { ArticleDto } from './dto/article.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ArticleEntity } from '~/shared/module/article.entity';
 import { Repository } from 'typeorm';
 import { UserEntity } from '~/shared/module/user.entity';
-import { log } from 'console';
-import { UpdateArticaleDto } from './dto/update-article.dto';
+import { UpdateArticleDto } from './dto/update-article.dto';
 
 @Injectable()
-export class ArticalsService {
+export class ArticlesService {
   constructor(
     @InjectRepository(ArticleEntity)
     private readonly articRepo: Repository<ArticleEntity>,
@@ -17,11 +20,11 @@ export class ArticalsService {
     private readonly userRepo: Repository<UserEntity>,
   ) {}
 
-  async create(data: CreateArticaleDto) {
+  async create(id: number, data: CreateArticleDto) {
     const user = await this.userRepo
       .findOne({
         where: {
-          id: 1,
+          id,
         },
       })
       .catch((err) => {
@@ -42,18 +45,21 @@ export class ArticalsService {
 
     const res = await articale.save();
 
-    return new ArticaleDto(res);
+    return new ArticleDto(res);
   }
 
   async getList() {
     const articles = await this.articRepo.find();
 
-    return articles.map((item) => new ArticaleDto(item));
+    return articles.map((item) => new ArticleDto(item));
   }
 
   async getById(id: number) {
     const article = await this.articRepo
-      .findOne({ where: { id } })
+      .findOne({
+        where: { id },
+        relations: ['author'],
+      })
       .catch((err) => {
         console.log(err);
         return null;
@@ -63,10 +69,10 @@ export class ArticalsService {
       throw new NotFoundException('Article not found');
     }
 
-    return new ArticaleDto(article);
+    return new ArticleDto(article);
   }
 
-  async updateById(id: number, data: UpdateArticaleDto) {
+  async updateById(id: number, data: UpdateArticleDto) {
     await this.articRepo
       .update(
         { id },

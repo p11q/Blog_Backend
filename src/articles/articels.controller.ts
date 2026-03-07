@@ -8,19 +8,19 @@ import {
   Put,
   UseGuards,
 } from '@nestjs/common';
-import { ArticalsService } from './articles.service';
-import { CreateArticaleDto } from './dto/creat-article.dto';
-import { UpdateArticaleDto } from './dto/update-article.dto';
-import { AuthGuard } from '~/auth/auth.guard';
+import { ArticlesService } from './articles.service';
+import { CreateArticleDto } from './dto/creat-article.dto';
+import { AuthGuard } from '~/guards/auth.guard';
+import { AuthorGuard } from '~/guards/author.guard';
 
 @Controller('articles')
 export class ArticalsController {
-  constructor(private readonly service: ArticalsService) {}
+  constructor(private readonly service: ArticlesService) {}
 
   @Post()
   @UseGuards(AuthGuard)
-  create(@Body() data: CreateArticaleDto) {
-    return this.service.create(data);
+  create(@Param('id') id: number, @Body() data: CreateArticleDto) {
+    return this.service.create(id, data);
   }
 
   @Get()
@@ -34,14 +34,14 @@ export class ArticalsController {
   }
 
   @Put(':id')
-  @UseGuards(AuthGuard)
-  updateById(@Param('id') id: number, @Body() data: UpdateArticaleDto) {
+  @UseGuards(AuthGuard, AuthorGuard)
+  updateById(@Param('id') id: number, @Body() data: CreateArticleDto) {
     return this.service.updateById(id, data);
   }
 
   @Delete(':id')
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard, AuthorGuard)
   deleteById(@Param('id') id: number) {
-    this.service.deleteById(id);
+    return this.service.deleteById(id);
   }
 }

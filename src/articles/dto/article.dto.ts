@@ -1,7 +1,7 @@
 import { ArticleEntity } from '~/shared/module/article.entity';
 import { UserEntity } from '~/shared/module/user.entity'; // добавьте импорт
 
-export class ArticaleDto {
+export class ArticleDto {
   id: number;
   title: string;
   text: string;

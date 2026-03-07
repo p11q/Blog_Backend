@@ -1,4 +1,4 @@
-export class UpdateArticaleDto {
+export class UpdateArticleDto {
   title: string;
   text: string;
   description: string;
