@@ -20,22 +20,7 @@ export class ArticlesService {
     private readonly userRepo: Repository<UserEntity>,
   ) {}
 
-  async create(id: number, data: CreateArticleDto) {
-    const user = await this.userRepo
-      .findOne({
-        where: {
-          id,
-        },
-      })
-      .catch((err) => {
-        console.log(err);
-        return null;
-      });
-
-    if (!user) {
-      throw new NotFoundException('User not found');
-    }
-
+  async create(user: UserEntity, data: CreateArticleDto) {
     const articale = new ArticleEntity();
     articale.title = data.title;
     articale.text = data.text;
@@ -72,26 +57,47 @@ export class ArticlesService {
     return new ArticleDto(article);
   }
 
-  async updateById(id: number, data: UpdateArticleDto) {
-    await this.articRepo
-      .update(
-        { id },
-        {
-          title: data.title,
-          text: data.text,
-          description: data.description,
-          tags: data.tags,
-        },
-      )
-      .catch((err) => {
-        console.log(err);
-        return null;
-      });
-
-    return await this.getById(id);
+  async updateById(user: UserEntity, id: number, data: UpdateArticleDto) {
+    const articale = await this.articRepo.findOne({
+      where: {
+        id,
+      },
+      relations: ['author'],
+    });
+    if (user && articale && user.id === articale.author.id) {
+      await this.articRepo
+        .update(
+          { id },
+          {
+            title: data.title,
+            text: data.text,
+            description: data.description,
+            tags: data.tags,
+          },
+        )
+        .catch((err) => {
+          console.log(err);
+          return null;
+        });
+      return await this.getById(id);
+    }
+    throw new BadRequestException(
+      "You don't have enough rights to change this article.",
+    );
   }
 
-  async deleteById(id: number) {
-    await this.articRepo.delete(id);
+  async deleteById(user: UserEntity, id: number) {
+    const articale = await this.articRepo.findOne({
+      where: {
+        id,
+      },
+      relations: ['author'],
+    });
+    if (user && articale && user.id === articale.author.id) {
+      await this.articRepo.delete(id);
+    }
+    throw new BadRequestException(
+      "You don't have enough rights to change this article.",
+    );
   }
 }

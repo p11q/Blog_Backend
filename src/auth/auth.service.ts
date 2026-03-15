@@ -14,6 +14,7 @@ import { MoreThan, Repository } from 'typeorm';
 import { RefreshTokenEntity } from '~/shared/module/refresh-token.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { randomBytes } from 'node:crypto';
+import { JwtStrategy } from './jwt/jwt.strategy';
 
 @Injectable()
 export class AuthService {
@@ -31,10 +32,7 @@ export class AuthService {
       throw new BadRequestException('User not found');
     }
 
-    const isPasswordValid = await bcrypt.compare(
-      data.password,
-      (await user).password,
-    );
+    const isPasswordValid = await bcrypt.compare(data.password, user.password);
     if (!isPasswordValid) {
       throw new UnauthorizedException('Invalid Password');
     }
@@ -43,11 +41,6 @@ export class AuthService {
   }
 
   async signUp(data: SignUpDto): Promise<SignInResponceDto> {
-    const isEmailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email);
-    if (!isEmailValid) {
-      throw new BadRequestException('Invalid email');
-    }
-
     const user = await this.userService.getUserByEmail(data.email);
     if (user) {
       throw new BadRequestException('User already exists');
@@ -104,5 +97,9 @@ export class AuthService {
     }
 
     return this.getTokens(refreshToken.user);
+  }
+
+  async validateUserById(userId: number) {
+    return await this.userService.getUserById(userId);
   }
 }

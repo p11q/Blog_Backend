@@ -1,13 +1,31 @@
+import { IsDate, IsNotEmpty, IsString, IsUUID } from 'class-validator';
 import { ArticleEntity } from '~/shared/module/article.entity';
 import { UserEntity } from '~/shared/module/user.entity'; // добавьте импорт
 
 export class ArticleDto {
+  @IsUUID()
   id: number;
+
+  @IsString()
+  @IsNotEmpty()
   title: string;
+
+  @IsString()
+  @IsNotEmpty()
   text: string;
+
+  @IsString()
+  @IsNotEmpty()
   description: string;
+
+  @IsString()
+  @IsNotEmpty()
   tags: string;
+
+  @IsDate()
   createAt: Date;
+
+  @IsDate()
   updateAt: Date;
   author?: UserEntity;
 

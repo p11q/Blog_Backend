@@ -6,6 +6,7 @@ import { UserEntity } from '~/shared/module/user.entity';
 import { UsersService } from '~/users/users.service';
 import { JwtModule } from '@nestjs/jwt';
 import { RefreshTokenEntity } from '~/shared/module/refresh-token.entity';
+import { JwtStrategy } from './jwt/jwt.strategy';
 
 @Module({
   imports: [
@@ -13,11 +14,11 @@ import { RefreshTokenEntity } from '~/shared/module/refresh-token.entity';
     JwtModule.register({
       global: true,
       secret: process.env.JWT_SECRET,
-      signOptions: { expiresIn: '600s' },
+      signOptions: { expiresIn: +process.env.Expires_JWT_Token },
     }),
   ],
-  exports: [AuthService],
-  providers: [AuthService, UsersService],
+  exports: [AuthService, JwtModule],
+  providers: [AuthService, UsersService, JwtStrategy],
   controllers: [AuthController],
 })
 export class AuthModule {}
