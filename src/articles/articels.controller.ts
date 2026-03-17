@@ -12,6 +12,8 @@ import {
 import { ArticlesService } from './articles.service';
 import { CreateArticleDto } from './dto/creat-article.dto';
 import { AuthGuard } from '~/guards/auth.guard';
+import { UserEntity } from '~/shared/module/user.entity';
+import { User } from '~/libs/common/decorators/user.decorator';
 
 @Controller('articles')
 export class ArticalsController {
@@ -19,8 +21,8 @@ export class ArticalsController {
 
   @Post()
   @UseGuards(AuthGuard)
-  create(@Request() req, @Body() data: CreateArticleDto) {
-    return this.service.create(req.user, data);
+  create(@User() user: UserEntity, @Body() data: CreateArticleDto) {
+    return this.service.create(user, data);
   }
 
   @Get()
@@ -36,16 +38,16 @@ export class ArticalsController {
   @Put(':id')
   @UseGuards(AuthGuard)
   updateById(
-    @Request() req,
+    @User() user: UserEntity,
     @Param('id') id_artile: number,
     @Body() data: CreateArticleDto,
   ) {
-    return this.service.updateById(req.user, id_artile, data);
+    return this.service.updateById(user, id_artile, data);
   }
 
   @Delete(':id')
   @UseGuards(AuthGuard)
-  deleteById(@Request() req, @Param('id') id: number) {
-    return this.service.deleteById(req.user, id);
+  deleteById(@User() user: UserEntity, @Param('id') id: number) {
+    return this.service.deleteById(user, id);
   }
 }
