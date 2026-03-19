@@ -7,9 +7,9 @@ import { AuthGuard } from '~/guards/auth.guard';
 export class UsersController {
   constructor(private readonly UserService: UsersService) {}
 
-  @Get('me')
   @UseGuards(AuthGuard)
-  async getMe(@Request() req): Promise<UserDto> {
+  @Get('profile')
+  async getProfile(@Request() req): Promise<UserDto> {
     const user = await this.UserService.getUserById(req.user?.id);
     return new UserDto(user);
   }

@@ -53,13 +53,17 @@ export class ArticlesService {
     return new ArticleDto(article);
   }
 
-  async updateById(user: UserEntity, id: number, data: UpdateArticleDto) {
+  async updateById(
+    id_author: number,
+    id_article: number,
+    data: UpdateArticleDto,
+  ) {
     await this.articRepo
       .update(
         {
-          id,
+          id: id_article,
           author: {
-            id: user.id,
+            id: id_author,
           },
         },
         {
@@ -72,16 +76,16 @@ export class ArticlesService {
       .catch(() => {
         throw new InternalServerErrorException();
       });
-    return await this.getById(id);
+    return await this.getById(id_article);
   }
 
-  async deleteById(user: UserEntity, id: number) {
+  async deleteById(id_author: number, id_article: number) {
     const articale = await this.articRepo
       .findOne({
         where: {
-          id,
+          id: id_article,
           author: {
-            id: user.id,
+            id: id_author,
           },
         },
         relations: ['author'],

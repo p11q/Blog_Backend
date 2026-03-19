@@ -38,16 +38,16 @@ export class ArticalsController {
   @Put(':id')
   @UseGuards(AuthGuard)
   updateById(
-    @User() user: UserEntity,
-    @Param('id') id_artile: number,
+    @User('id') id_author: number,
+    @Param('id') id_article: number,
     @Body() data: CreateArticleDto,
   ) {
-    return this.service.updateById(user, id_artile, data);
+    return this.service.updateById(id_author, id_article, data);
   }
 
   @Delete(':id')
   @UseGuards(AuthGuard)
-  deleteById(@User() user: UserEntity, @Param('id') id: number) {
-    return this.service.deleteById(user, id);
+  deleteById(@User('id') id_author: number, @Param('id') id_article: number) {
+    return this.service.deleteById(id_author, id_article);
   }
 }

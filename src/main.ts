@@ -1,15 +1,17 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
-
-const PORT = 3000;
-const HOST = '127.0.0.1';
+import { ConfigService } from '@nestjs/config';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  app.useGlobalPipes(new ValidationPipe());
-  await app.listen(PORT, HOST, () => {
-    console.log(`Server started on port ${PORT}`);
-  });
+  app.useGlobalPipes(new ValidationPipe({ transform: true }));
+
+  const config = app.get(ConfigService);
+
+  await app.listen(
+    config.getOrThrow<number>('SERVER_PORT'),
+    config.getOrThrow<string>('SERVER_HOST'),
+  );
 }
 void bootstrap();
