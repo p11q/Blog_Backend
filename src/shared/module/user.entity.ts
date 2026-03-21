@@ -9,6 +9,7 @@ import {
 } from 'typeorm';
 import { ArticleEntity } from './article.entity';
 import { RefreshTokenEntity } from './refresh-token.entity';
+import { CommentEntity } from './comment.entity';
 
 export enum EUserRole {
   admin = 'admin',
@@ -40,6 +41,9 @@ export class UserEntity extends BaseEntity {
 
   @OneToMany(() => ArticleEntity, (item) => item.author)
   articles: ArticleEntity[];
+
+  @OneToMany(() => CommentEntity, (item) => item.author)
+  comments: CommentEntity[];
 
   @OneToMany(() => RefreshTokenEntity, (item) => item.user)
   refreshTokens: RefreshTokenEntity[];

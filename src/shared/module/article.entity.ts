@@ -5,10 +5,12 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { UserEntity } from './user.entity';
+import { CommentEntity } from './comment.entity';
 
 @Entity('articles')
 export class ArticleEntity extends BaseEntity {
@@ -36,4 +38,8 @@ export class ArticleEntity extends BaseEntity {
   @ManyToOne(() => UserEntity, (item) => item.articles)
   @JoinColumn({ name: 'user_id' })
   author: UserEntity;
+
+  @OneToMany(() => CommentEntity, (item) => item.article)
+  @JoinColumn({ name: 'comments_id' })
+  comments: CommentEntity[];
 }

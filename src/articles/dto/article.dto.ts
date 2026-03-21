@@ -1,9 +1,9 @@
-import { IsDate, IsNotEmpty, IsString, IsUUID } from 'class-validator';
+import { IsDate, IsNotEmpty, IsNumber, IsString } from 'class-validator';
 import { ArticleEntity } from '~/shared/module/article.entity';
 import { UserEntity } from '~/shared/module/user.entity'; // добавьте импорт
 
 export class ArticleDto {
-  @IsUUID()
+  @IsNumber()
   id: number;
 
   @IsString()
