@@ -1,9 +1,21 @@
+import { IsEmail, IsNotEmpty, IsNumber, IsString } from 'class-validator';
 import { UserEntity } from '~/shared/module/user.entity';
 
 export class UserDto {
+  @IsNumber()
   id: number;
+
+  @IsString()
+  @IsNotEmpty()
   name: string;
+
+  @IsString()
+  @IsEmail()
+  @IsNotEmpty()
   email: string;
+
+  @IsString()
+  @IsNotEmpty()
   role: string;
 
   constructor(data: UserEntity) {

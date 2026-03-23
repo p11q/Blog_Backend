@@ -1,9 +1,4 @@
-import {
-  BadRequestException,
-  Injectable,
-  InternalServerErrorException,
-  NotFoundException,
-} from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { CreateArticleDto } from './dto/creat-article.dto';
 import { ArticleDto } from './dto/article.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -21,13 +16,13 @@ export class ArticlesService {
     private readonly userRepo: Repository<UserEntity>,
   ) {}
 
-  async create(user: UserEntity, data: CreateArticleDto) {
+  async create(author: UserEntity, data: CreateArticleDto) {
     const articale = new ArticleEntity();
     articale.title = data.title;
     articale.text = data.text;
     articale.description = data.description;
     articale.tags = data.tags;
-    articale.author = user;
+    articale.author = author;
 
     const res = await articale.save();
 
@@ -53,13 +48,17 @@ export class ArticlesService {
     return new ArticleDto(article);
   }
 
-  async updateById(user: UserEntity, id: number, data: UpdateArticleDto) {
+  async updateById(
+    id_author: number,
+    id_article: number,
+    data: UpdateArticleDto,
+  ) {
     await this.articRepo
       .update(
         {
-          id,
+          id: id_article,
           author: {
-            id: user.id,
+            id: id_author,
           },
         },
         {
@@ -72,16 +71,16 @@ export class ArticlesService {
       .catch(() => {
         throw new InternalServerErrorException();
       });
-    return await this.getById(id);
+    return await this.getById(id_article);
   }
 
-  async deleteById(user: UserEntity, id: number) {
+  async deleteById(id_author: number, id_article: number) {
     const articale = await this.articRepo
       .findOne({
         where: {
-          id,
+          id: id_article,
           author: {
-            id: user.id,
+            id: id_author,
           },
         },
         relations: ['author'],

@@ -10,6 +10,7 @@ import {
 import { ArticleEntity } from './article.entity';
 import { RefreshTokenEntity } from './refresh-token.entity';
 import { CommentEntity } from './comment.entity';
+import { IsNumber } from 'class-validator';
 
 export enum EUserRole {
   admin = 'admin',
@@ -19,6 +20,7 @@ export enum EUserRole {
 @Entity('users')
 export class UserEntity extends BaseEntity {
   @PrimaryGeneratedColumn()
+  @IsNumber()
   id: number;
 
   @Column()

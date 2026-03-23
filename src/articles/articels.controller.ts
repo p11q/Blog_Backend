@@ -7,7 +7,6 @@ import {
   Post,
   Put,
   UseGuards,
-  Request,
 } from '@nestjs/common';
 import { ArticlesService } from './articles.service';
 import { CreateArticleDto } from './dto/creat-article.dto';
@@ -21,8 +20,8 @@ export class ArticalsController {
 
   @Post()
   @UseGuards(AuthGuard)
-  create(@User() user: UserEntity, @Body() data: CreateArticleDto) {
-    return this.service.create(user, data);
+  create(@User() author: UserEntity, @Body() data: CreateArticleDto) {
+    return this.service.create(author, data);
   }
 
   @Get()
@@ -38,16 +37,16 @@ export class ArticalsController {
   @Put(':id')
   @UseGuards(AuthGuard)
   updateById(
-    @User() user: UserEntity,
-    @Param('id') id_artile: number,
+    @User('id') id_author: number,
+    @Param('id') id_article: number,
     @Body() data: CreateArticleDto,
   ) {
-    return this.service.updateById(user, id_artile, data);
+    return this.service.updateById(id_author, id_article, data);
   }
 
   @Delete(':id')
   @UseGuards(AuthGuard)
-  deleteById(@User() user: UserEntity, @Param('id') id: number) {
-    return this.service.deleteById(user, id);
+  deleteById(@User('id') id_author: number, @Param('id') id_article: number) {
+    return this.service.deleteById(id_author, id_article);
   }
 }
